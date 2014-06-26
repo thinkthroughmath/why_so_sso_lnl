@@ -1,16 +1,6 @@
-RevealJade
-==========
+Why So SSO LnL
 
-[Jade](https://github.com/visionmedia/jade) alternative utilities for creating a [Reveal.js](https://github.com/hakimel/reveal.js) presentation.
-
-## About
-
-This is an implementation of [Reveal.js](https://github.com/hakimel/reveal.js) that simplifes the creation of presentations by treating it as a bower dependency and allowing you to generate you presentation markup with Jade.
-
-To further simply markup this also includes some common slide style mixins. All slides also accept Jade blocks so they are intended to be loose or unnessecary to use.
-
-
-## Setup
+## Setup RevealJade
 
 1. Clone Repo
 2. Install NodeJS ~0.10 if you don't have it
@@ -18,9 +8,7 @@ To further simply markup this also includes some common slide style mixins. All 
 4. `npm install`
 5. `bower install`
 6. `grunt serve`
-7. Checkout the example page at localhost:8000/example
-8. Create a new folder and put your index.jade in there
-9. include header and footer like in the example
+7. Checkout the presentation at localhost:8000
 10. Enjoy!
 
 ## The Mixins
