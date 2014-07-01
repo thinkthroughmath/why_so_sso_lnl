@@ -11,24 +11,56 @@ html(lang="en")
   body
     .reveal
       .slides
-        +titleSlide({title: "Quick Presentations With RevealJade",subtitle: "I know right?"})
-        +ulSlide("Get Started", [
-          "npm install -g bower grunt",
-          "npm install",
-          "bower install",
-          "grunt serve",
-          "go to localhost:8000/example/"
-          ])
-        +bigTitleSlide("I am a big title slide")
-          p Enjoy
-        +slide()
-          p This is a normal Slide. Just nest jade under me
-        +slideGroup()
-          +bigTitleSlide("First Slide in a group")
-          +bigTitleSlide("Last Slide in a group")
+        +titleSlide({title: "Single Sign-On",subtitle: "Say it three times and Idaho comes out of the mirror and kills you"})
         +slide
           :markdown
-            # Markdown flavored Slide
-            ## Thank you Jade
-
+            # So, OAuth and we're done, right?
+            ## Not exactly...
+        +slide
+          :markdown
+            # Is it a student or an educator?
+            * Different attributes
+            * Location matters
+             * school, classroom(s)
+        +slide
+          :markdown
+            # Are they new, or already in the system?
+            * first_or_create() helps here
+            * You need to do that all the way up the chain though
+            * Expensive queries to be running during login
+        +slide
+          :markdown
+            # Why do we care about hierarchy?
+            * Motivation programs
+            * Reporting
+        +slide
+          :markdown
+            # So how do we...
+            ![Deal with it](http://static.fjcdn.com/gifs/Deal_368aed_1390499.gif "Deal with it?")
+        +slide
+          :markdown
+            # Preprovisioning (the Idaho way!)
+            * Separate periodic feed of user data + hierarchy
+            * All authentication claims guaranteed<sup>TM</sup> to be valid
+            * Reject any claim that doesn’t match
+            * Clever provisioning + SSO is the ideal case here
+        +slide
+          :markdown
+            # OpenID Connect
+            * Dynamic claim attributes to manage hierarchy
+            * Doesn't stop the first_or_create() cycle though
+        +slide
+          :markdown
+            # We could do better
+            * Send building with login claim
+            * Put user in a 'holding' entity in the school
+            * ... let users build class hierarchy as needed
+            * ... or treat class as a tag
+            * ... or just let the user pick!
+        +slide
+          :markdown
+            # Summary
+            * SSO is a necessary evil
+            * Doesn't make it not evil
+            * Part of why it's evil is because we care about hierarchy
     include shared/footer
