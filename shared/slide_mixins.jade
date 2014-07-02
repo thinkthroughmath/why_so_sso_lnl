@@ -18,10 +18,22 @@ mixin ulSlide(title, list, attrs)
     +ul(list)
     block
 
+mixin ulFragmentSlide(title,list,attrs)
+  +slide(attrs)
+    h3= title
+    +ulFragment(list)
+    block
+
 mixin olSlide(title, list, attrs)
   +slide(attrs)
     h3= title
     +ol(list)
+    block
+
+mixin olFragmentSlide(title,list,attrs)
+  +slide(attrs)
+    h3= title
+    +olFragment(list)
     block
 
 mixin bigTitleSlide(title, attrs)
@@ -35,9 +47,13 @@ mixin littleTitleSlide(title, attrs)
     block
 
 mixin slide(attrs)
-  section&attributes(attrs == Object ? attrs : {})
+  section&attributes(typeof(attrs) == 'object' ? attrs : {})
     block
 
 mixin slideGroup(attrs)
   +slide(attrs)
+    block
+
+mixin speakerNotes(attrs)
+  aside.notes&attributes(typeof(attrs) == 'object' ? attrs : {})
     block
