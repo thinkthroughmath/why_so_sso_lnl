@@ -10,7 +10,7 @@ include shared/slide_mixins
       * Stragegies are out there and well maintained already
       * Keepin it Railsy
 
-+slideGroup
++slideGroup({'data-background':'#808100', class:'ul-color white'})
   +slide
     :markdown
       # The Strategy
@@ -34,19 +34,17 @@ include shared/slide_mixins
         * An official place to redirect to with a payload after the login is completed. This is the breaking point where strategies differ
         * Something in the application to accept the redirect and gain access to the payload sent by the provider
 
-+slideGroup 
-  +slide
++slide
+  :markdown
+    # Omniauth is just a wrapper for Rack
+    ## Who doesn't love middleware
+  +speakerNotes
     :markdown
-      # Omniauth is just a wrapper for Rack
-      ## Who doesn't love middleware
-    +speakerNotes
-      :markdown
-        * Capturing the request origin
-        * Waiting for the Callback
-        * exposing data to the session
-  +slide
+      * Capturing the request origin
+      * Waiting for the Callback
+      * exposing data to the session
 
-+slideGroup
++slideGroup({"data-background":'#0079CF', class:'ul-color white'})
   +slide
     :markdown
       # OAuth(s)
@@ -82,7 +80,7 @@ include shared/slide_mixins
     +speakerNotes
       :markdown
         * Still ouath is not an access protocal
-+slideGroup
++slideGroup({"data-background":'#0062AF', class:'ul-color white'})
   +slide
     :markdown
       # Our SSO Solutions
@@ -98,22 +96,22 @@ include shared/slide_mixins
         * They use a completely external process and send us a signed payload
         * Payload connection is not required to be SSL but we use the SSL fingerprint to decode it
         * Lacks any scoping options so we have to check all users and types to decide what to do
-  +slideGroup
-    +slide
++slideGroup({"data-background":'#0062AF', class:'ul-color white'})
+  +slide
+    :markdown
+      # OpenIDConnect
+      ### OAuth2 with LDAP
+  +slide
+    :markdown
+      # OpenID...
+      ### User directory access
+  +slide
+    :markdown
+      # ...Connect
+      ### Authentication
+    +speakerNotes
       :markdown
-        # OpenIDConnect
-        ### OAuth2 with LDAP
-    +slide
-      :markdown
-        # OpenID...
-        ### User directory access
-    +slide
-      :markdown
-        # ...Connect
-        ### Authentication
-      +speakerNotes
-        :markdown
-          * While authentication protocals like OAuth2 are pretty well battlefield tested they are not desiged primarily for data access. While OAuth2 was designed around providing these features to OAuth1 it still is a rocky place.
-          * This had led to each SSO provider that relies on OAuth2 to provide their own mechanism for providing data access that is slightly different. What this means is you are going to have a lot of stratgies that all do about the same thing but not exactly
-          * Auth mean access privledge not data retrival strategy as that information will come as part of a second request
-          * General OpenIDConnect is the marriage of OAuth2 and OpenID
+        * While authentication protocals like OAuth2 are pretty well battlefield tested they are not desiged primarily for data access. While OAuth2 was designed around providing these features to OAuth1 it still is a rocky place.
+        * This had led to each SSO provider that relies on OAuth2 to provide their own mechanism for providing data access that is slightly different. What this means is you are going to have a lot of stratgies that all do about the same thing but not exactly
+        * Auth mean access privledge not data retrival strategy as that information will come as part of a second request
+        * General OpenIDConnect is the marriage of OAuth2 and OpenID
