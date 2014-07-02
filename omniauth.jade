@@ -9,6 +9,7 @@ include shared/slide_mixins
       * Generally the idea behind using omniauth over handwritten is omniauth forces you to maintain a pattern
       * Stragegies are out there and well maintained already
       * Keepin it Railsy
+
 +slideGroup
   +slide
     :markdown
@@ -32,6 +33,7 @@ include shared/slide_mixins
         * most of the time these are associated with authenticating your client. In this case the client is the web server
         * An official place to redirect to with a payload after the login is completed. This is the breaking point where strategies differ
         * Something in the application to accept the redirect and gain access to the payload sent by the provider
+
 +slideGroup 
   +slide
     :markdown
@@ -43,4 +45,75 @@ include shared/slide_mixins
         * Waiting for the Callback
         * exposing data to the session
   +slide
-    
+
++slideGroup
+  +slide
+    :markdown
+      # OAuth(s)
+      * Why don't we use Oauth v1 anymore
+      * What is wrong with Oauth v2 with SSO
+    +speakerNotes
+      :markdown
+        * OAuth1 is generally not in use except in legacy twitter
+        * OAuth2 is an authorization protocal and not an access protocal
+  +slide
+    :markdown
+      # OAuth v1
+      ### 'Request-side signing'
+      * Percent encode every key and value that will be signed.
+      * Sort the list of parameters alphabetically by encoded key.
+      * For each key/value pair:
+        * Append the encoded key to the output string.
+        * Append the '=' character to the output string.
+        * Append the encoded value to the output string.
+        * If there are more key/value pairs remaining, append a '&' character to the output string.
+    +speakerNotes
+      :markdown
+        * This is directly from the twitter Dev site
+        * Its a little complicated and easy to mess up if doing by hand.
+        * Ruby has an oauth gem of course that will do this for you
+  +slide
+    :markdown
+      # OAuth v2
+      ### 'Response-side signing'
+      * The responder signs with a simplified verion of the previous rules
+      * Relies on SSL for token delivery
+      * Tokens are short lived
+    +speakerNotes
+      :markdown
+        * Still ouath is not an access protocal
++slideGroup
+  +slide
+    :markdown
+      # Our SSO Solutions
+      ### At least for the moment
+  +slide
+    :markdown
+      # ADFS -> SAMLv2
+      ### Poor Mans OAuth1 over SOAP
+    +speakerNotes
+      :markdown
+        * This is how we interface with idaho
+        * Unlike oauth we do not direct the user to their login
+        * They use a completely external process and send us a signed payload
+        * Payload connection is not required to be SSL but we use the SSL fingerprint to decode it
+        * Lacks any scoping options so we have to check all users and types to decide what to do
+  +slideGroup
+    +slide
+      :markdown
+        # OpenIDConnect
+        ### OAuth2 with LDAP
+    +slide
+      :markdown
+        # OpenID...
+        ### User directory access
+    +slide
+      :markdown
+        # ...Connect
+        ### Authentication
+      +speakerNotes
+        :markdown
+          * While authentication protocals like OAuth2 are pretty well battlefield tested they are not desiged primarily for data access. While OAuth2 was designed around providing these features to OAuth1 it still is a rocky place.
+          * This had led to each SSO provider that relies on OAuth2 to provide their own mechanism for providing data access that is slightly different. What this means is you are going to have a lot of stratgies that all do about the same thing but not exactly
+          * Auth mean access privledge not data retrival strategy as that information will come as part of a second request
+          * General OpenIDConnect is the marriage of OAuth2 and OpenID
