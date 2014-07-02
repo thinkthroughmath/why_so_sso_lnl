@@ -1,0 +1,46 @@
+include shared/slide_mixins
+
++slide
+  :markdown
+    # Omniauth
+    ## A no more tears SSO solution
+  +speakerNotes
+    :markdown
+      * Generally the idea behind using omniauth over handwritten is omniauth forces you to maintain a pattern
+      * Stragegies are out there and well maintained already
+      * Keepin it Railsy
++slideGroup
+  +slide
+    :markdown
+      # The Strategy
+      * Request Phase
+      * Response Phase
+    +speakerNotes
+      :markdown
+        * Request Phase is what happens when we initiate the login request from the client side
+        * Response Phase is when the server approves our login and redirects us back
+  +slide
+    :markdown
+      # The configuration
+      * Login Form
+      * Client Request Attributes
+      * Redirect URL
+      * Sessions Controller
+    +speakerNotes
+      :markdown
+        * The login form on vanilla omniauth is an internal form that posts to a remote service generally most SSOs require that you leave your site via HTTPS and allow the user to communicate with the provider directly
+        * most of the time these are associated with authenticating your client. In this case the client is the web server
+        * An official place to redirect to with a payload after the login is completed. This is the breaking point where strategies differ
+        * Something in the application to accept the redirect and gain access to the payload sent by the provider
++slideGroup 
+  +slide
+    :markdown
+      # Omniauth is just a wrapper for Rack
+      ## Who doesn't love middleware
+    +speakerNotes
+      :markdown
+        * Capturing the request origin
+        * Waiting for the Callback
+        * exposing data to the session
+  +slide
+    
