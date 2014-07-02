@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SSO</title>
+    <meta name="description" content="">
+    <meta name="author" content="Paul Scarrone">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link id="theme" rel="stylesheet" href="bower_components/reveal.js/css/theme/moon.css">
+    <!-- For syntax highlighting-->
+    <link rel="stylesheet" href="bower_components/reveal.js/lib/css/zenburn.css">
+    <script src="//localhost:35729/livereload.js"></script>
+    <script>var revealLocation = 'bower_components/reveal.js/'</script>
+    <script type="text/javascript">document.write( '<link rel="stylesheet" href="' + revealLocation + 'css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script>
+    <!--if lt IE 9script(src= revealLocation + 'lib/js/html5shiv.js')
+    -->
+  </head>
+  <link rel="external" type="text/html" src="../shared/head.jade">
+  <body>
+    <div class="reveal">
+      <div class="slides">
+            <section>
+              <h1>Single Sign-On
+              </h1>
+              <h3>Say it three times and Idaho comes out of the mirror and kills you
+              </h3>
+              <p><small>Paul Scarrone and Jim Wrubel</small></p>
+              <aside class="notes">Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you open the speaker notes window (hit 's' on your keyboard).</aside>
+            </section>
+          <section><h1 id="so-oauth-and-we-re-done-right-">So, OAuth and we&#39;re done, right?</h1>
+<h2 id="not-exactly-">Not exactly...</h2>
+
+          </section>
+          <section><h1 id="is-it-a-student-or-an-educator-">Is it a student or an educator?</h1>
+<ul>
+<li>Different attributes</li>
+<li>Location matters<ul>
+<li>school, classroom(s)</li>
+</ul>
+</li>
+</ul>
+
+          </section>
+          <section><h1 id="are-they-new-or-already-in-the-system-">Are they new, or already in the system?</h1>
+<ul>
+<li>first_or_create() helps here</li>
+<li>You need to do that all the way up the chain though</li>
+<li>Expensive queries to be running during login</li>
+</ul>
+
+          </section>
+          <section><h1 id="why-do-we-care-about-hierarchy-">Why do we care about hierarchy?</h1>
+<ul>
+<li>Motivation programs</li>
+<li>Reporting</li>
+</ul>
+
+          </section>
+          <section><h1 id="so-how-do-we-">So how do we...</h1>
+<p><img src="assets/Deal_368aed_1390499.gif" alt="Deal with it" title="Deal with it?"></p>
+
+          </section>
+          <section><h1 id="preprovisioning-the-idaho-way-">Preprovisioning (the Idaho way!)</h1>
+<ul>
+<li>Separate periodic feed of user data + hierarchy</li>
+<li>All authentication claims guaranteed<sup>TM</sup> to be valid</li>
+<li>Reject any claim that doesn’t match</li>
+<li>Clever provisioning + SSO is the ideal case here</li>
+</ul>
+
+          </section>
+          <section><h1 id="openid-connect">OpenID Connect</h1>
+<ul>
+<li>Dynamic claim attributes to manage hierarchy</li>
+<li>Doesn&#39;t stop the first_or_create() cycle though</li>
+</ul>
+
+          </section>
+          <section><h1 id="we-could-do-better">We could do better</h1>
+<ul>
+<li>Send building with login claim</li>
+<li>Put user in a &#39;holding&#39; entity in the school</li>
+<li>... let users build class hierarchy as needed</li>
+<li>... or treat class as a tag</li>
+<li>... or just let the user pick!</li>
+</ul>
+
+          </section>
+          <section><h1 id="summary">Summary</h1>
+<ul>
+<li>SSO is a necessary evil</li>
+<li>Doesn&#39;t make it not evil</li>
+<li>Part of why it&#39;s evil is because we care about hierarchy</li>
+</ul>
+
+          </section>
+                <section><h1 id="omniauth">Omniauth</h1>
+<h2 id="a-no-more-tears-sso-solution">A no more tears SSO solution</h2>
+
+                          <aside class="notes"><ul>
+<li>Generally the idea behind using omniauth over handwritten is omniauth forces you to maintain a pattern</li>
+<li>Stragegies are out there and well maintained already</li>
+<li>Keepin it Railsy</li>
+</ul>
+
+                          </aside>
+                </section>
+                        <section data-background="#808100" class="ul-color white">
+                                  <section><h1 id="the-strategy">The Strategy</h1>
+<ul>
+<li>Request Phase</li>
+<li>Response Phase</li>
+</ul>
+
+                                            <aside class="notes"><ul>
+<li>Request Phase is what happens when we initiate the login request from the client side</li>
+<li>Response Phase is when the server approves our login and redirects us back</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                                  <section><h1 id="the-configuration">The configuration</h1>
+<ul>
+<li>Login Form</li>
+<li>Client Request Attributes</li>
+<li>Redirect URL</li>
+<li>Sessions Controller</li>
+</ul>
+
+                                            <aside class="notes"><ul>
+<li>The login form on vanilla omniauth is an internal form that posts to a remote service generally most SSOs require that you leave your site via HTTPS and allow the user to communicate with the provider directly</li>
+<li>most of the time these are associated with authenticating your client. In this case the client is the web server</li>
+<li>An official place to redirect to with a payload after the login is completed. This is the breaking point where strategies differ</li>
+<li>Something in the application to accept the redirect and gain access to the payload sent by the provider</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                        </section>
+                <section><h1 id="omniauth-is-just-a-wrapper-for-rack">Omniauth is just a wrapper for Rack</h1>
+<h2 id="who-doesn-t-love-middleware">Who doesn&#39;t love middleware</h2>
+
+                          <aside class="notes"><ul>
+<li>Capturing the request origin</li>
+<li>Waiting for the Callback</li>
+<li>exposing data to the session</li>
+</ul>
+
+                          </aside>
+                </section>
+                        <section data-background="#0079CF" class="ul-color white">
+                                  <section><h1 id="oauth-s-">OAuth(s)</h1>
+<ul>
+<li>Why don&#39;t we use Oauth v1 anymore</li>
+<li>What is wrong with Oauth v2 with SSO</li>
+</ul>
+
+                                            <aside class="notes"><ul>
+<li>OAuth1 is generally not in use except in legacy twitter</li>
+<li>OAuth2 is an authorization protocal and not an access protocal</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                                  <section><h1 id="oauth-v1">OAuth v1</h1>
+<h3 id="-request-side-signing-">&#39;Request-side signing&#39;</h3>
+<ul>
+<li>Percent encode every key and value that will be signed.</li>
+<li>Sort the list of parameters alphabetically by encoded key.</li>
+<li>For each key/value pair:<ul>
+<li>Append the encoded key to the output string.</li>
+<li>Append the &#39;=&#39; character to the output string.</li>
+<li>Append the encoded value to the output string.</li>
+<li>If there are more key/value pairs remaining, append a &#39;&amp;&#39; character to the output string.</li>
+</ul>
+</li>
+</ul>
+
+                                            <aside class="notes"><ul>
+<li>This is directly from the twitter Dev site</li>
+<li>Its a little complicated and easy to mess up if doing by hand.</li>
+<li>Ruby has an oauth gem of course that will do this for you</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                                  <section><h1 id="oauth-v2">OAuth v2</h1>
+<h3 id="-response-side-signing-">&#39;Response-side signing&#39;</h3>
+<ul>
+<li>The responder signs with a simplified verion of the previous rules</li>
+<li>Relies on SSL for token delivery</li>
+<li>Tokens are short lived</li>
+</ul>
+
+                                            <aside class="notes"><ul>
+<li>Still ouath is not an access protocal</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                        </section>
+                        <section data-background="#0062AF" class="ul-color white">
+                                  <section><h1 id="our-sso-solutions">Our SSO Solutions</h1>
+<h3 id="at-least-for-the-moment">At least for the moment</h3>
+
+                                  </section>
+                                  <section><h1 id="adfs-samlv2">ADFS -&gt; SAMLv2</h1>
+<h3 id="poor-mans-oauth1-over-soap">Poor Mans OAuth1 over SOAP</h3>
+
+                                            <aside class="notes"><ul>
+<li>This is how we interface with idaho</li>
+<li>Unlike oauth we do not direct the user to their login</li>
+<li>They use a completely external process and send us a signed payload</li>
+<li>Payload connection is not required to be SSL but we use the SSL fingerprint to decode it</li>
+<li>Lacks any scoping options so we have to check all users and types to decide what to do</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                        </section>
+                        <section data-background="#0062AF" class="ul-color white">
+                                  <section><h1 id="openidconnect">OpenIDConnect</h1>
+<h3 id="oauth2-with-ldap">OAuth2 with LDAP</h3>
+
+                                  </section>
+                                  <section><h1 id="openid-">OpenID...</h1>
+<h3 id="user-directory-access">User directory access</h3>
+
+                                  </section>
+                                  <section><h1 id="-connect">...Connect</h1>
+<h3 id="authentication">Authentication</h3>
+
+                                            <aside class="notes"><ul>
+<li>While authentication protocals like OAuth2 are pretty well battlefield tested they are not desiged primarily for data access. While OAuth2 was designed around providing these features to OAuth1 it still is a rocky place.</li>
+<li>This had led to each SSO provider that relies on OAuth2 to provide their own mechanism for providing data access that is slightly different. What this means is you are going to have a lot of stratgies that all do about the same thing but not exactly</li>
+<li>Auth mean access privledge not data retrival strategy as that information will come as part of a second request</li>
+<li>General OpenIDConnect is the marriage of OAuth2 and OpenID</li>
+</ul>
+
+                                            </aside>
+                                  </section>
+                        </section>
+      </div>
+    </div>
+    <script type="text/javascript" src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script type="text/javascript" src="bower_components/reveal.js/js/reveal.js"></script>
+    <script>
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+       Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: 'moon',
+        slideNumber: true,
+        transition: 'concave',
+        // Parallax scrolling
+        // parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+        // parallaxBackgroundSize: '2100px 900px',
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: revealLocation + 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: revealLocation + 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: revealLocation + 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: revealLocation + 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: revealLocation + 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+        ]
+       });
+    </script>
+  </body>
+</html>
